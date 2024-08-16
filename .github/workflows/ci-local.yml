@@ -4,7 +4,6 @@ on: [pull_request]
 
 jobs:
   test-local:
-
     runs-on: ubuntu-latest
 
     steps:
