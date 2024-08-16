@@ -1,0 +1,25 @@
+name: Orchestrator
+
+on:
+  workflow_dispatch:
+
+jobs:
+  orchestrate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Trigger Django Local CI
+      uses: peter-evans/workflow-dispatch@v1
+      with:
+        workflow: ci-local.yml
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Wait for Django Local CI completion
+      run: |
+        echo "Waiting for Django Local CI to complete..."
+
+    - name: Trigger Django Docker CI
+      uses: peter-evans/workflow-dispatch@v1
+      with:
+        workflow: ci-docker.yml
+        token: ${{ secrets.GITHUB_TOKEN }}
