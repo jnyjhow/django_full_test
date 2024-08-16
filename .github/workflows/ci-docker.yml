@@ -1,28 +1,14 @@
-name: Django CI
+name: Django Docker CI
 
 on: [pull_request]
 
 jobs:
-  test:
+  test-docker:
 
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
-
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.x'
-
-    - name: Install dependencies
-      run: |
-        pip install -r requirements.txt
-
-    - name: Run Tests (Local)
-      run: |
-        cd src/
-        python manage.py test
 
     - name: Install Docker Compose
       run: |
