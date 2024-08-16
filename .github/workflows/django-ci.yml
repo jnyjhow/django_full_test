@@ -10,16 +10,28 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up Python
+    - name: Set up Python Local
       uses: actions/setup-python@v4
       with:
         python-version: '3.x'
 
-    - name: Install dependencies
+    - name: Install dependencies Local
       run: |
         pip install -r requirements.txt
 
-    - name: Run Tests
+    - name: Run Tests Local
       run: |
         cd src/
         python manage.py test
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Build Docker image
+      run: |
+        docker-compose build
+
+    - name: Run tests with docker
+      run: |
+        docker-compose run --rm web python manage.py test
+
