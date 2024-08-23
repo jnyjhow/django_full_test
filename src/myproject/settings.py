@@ -94,7 +94,7 @@ DATABASES = {
 }
 
 DATABASE_URL = config("ORACLE_DATABASE_URL", default=False, cast=bool)
-# print(DATABASE_URL)
+print("DATABASE_URL: ", DATABASE_URL)
 if DATABASE_URL:
     ORACLE_USER = config("ORACLE_USER", default=None)
     ORACLE_PASSWORD = config("ORACLE_PASSWORD", default=None)
