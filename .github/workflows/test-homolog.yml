@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SCRIPT_NAME: run_django_test.sh
-      
+
       DJANGO_DEBUG: ${{ vars.DJANGO_DEBUG }}
       ORACLE_DATABASE_URL: ${{ vars.ORACLE_DATABASE_URL }}
 
@@ -38,5 +38,6 @@ jobs:
 
     - name: Run Tests with Docker
       run: |
-        chmod +x $SCRIPT_NAME
-        docker-compose run --rm web $SCRIPT_NAME
+        docker-compose run --rm web python manage.py makemigrations
+        docker-compose run --rm web python manage.py migrate
+        docker-compose run --rm web python manage.py test
