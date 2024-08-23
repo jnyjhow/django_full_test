@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +22,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-z1m5qwxa22huga*j(hv)p8f-)7@kon^tyxf2mv27emyq$d%ybo"
+SECRET_KEY = config("DJANGO_SECRET_KEY", cast=str)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DJANGO_DEBUG", cast=bool)
 
 ALLOWED_HOSTS = []
+
+if DEBUG:
+
+    ALLOWED_HOSTS += [
+        "127.0.0.1",
+        "localhost"
+    ]
+
+    print("SECRET_KEY: ", SECRET_KEY)
+    print("DEBUG: ", DEBUG)
 
 
 # Application definition
@@ -37,6 +49,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "myapp"
 ]
 
 MIDDLEWARE = [
@@ -79,6 +92,23 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+DATABASE_URL = config("ORACLE_DATABASE_URL", default=False, cast=bool)
+# print(DATABASE_URL)
+if DATABASE_URL:
+    ORACLE_USER = config("ORACLE_USER", default=None)
+    ORACLE_PASSWORD = config("ORACLE_PASSWORD", default=None)
+    ORACLE_DSN = config("ORACLE_DSN", default=None)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.oracle',
+            'NAME': (
+                ORACLE_DSN
+            ),
+            'USER': ORACLE_USER,
+            'PASSWORD': ORACLE_PASSWORD,
+        }
+    }
 
 
 # Password validation

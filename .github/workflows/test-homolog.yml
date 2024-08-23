@@ -1,4 +1,4 @@
-name: Django CI Homolog
+name: Django CI Homolog - Docker
 
 on:
   push:
@@ -12,6 +12,14 @@ jobs:
 
   test-docker:
     runs-on: ubuntu-latest
+    env:
+      DJANGO_DEBUG: ${{ vars.DJANGO_DEBUG }}
+      ORACLE_DATABASE_URL: ${{ vars.ORACLE_DATABASE_URL }}
+
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      ORACLE_USER: ${{ secrets.ORACLE_USER }}
+      ORACLE_PASSWORD: ${{ secrets.ORACLE_PASSWORD }}
+      ORACLE_DSN: ${{ secrets.ORACLE_DSN }}
     environment: homolog
 
     steps:

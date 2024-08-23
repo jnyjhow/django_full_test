@@ -1,4 +1,4 @@
-name: Django CI Dev
+name: Django CI Dev - Local
 
 on:
   push:
@@ -11,18 +11,44 @@ on:
 jobs:
   test-local:
     runs-on: ubuntu-latest
+    env:
+      DJANGO_DEBUG: ${{ vars.DJANGO_DEBUG }}
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
     environment: dev
+
+    strategy:
+      matrix:
+        python-version: [3.11, 3.12]
 
     steps:
     - uses: actions/checkout@v3
 
+    #- name: Set up Python
+    #  uses: actions/setup-python@v4
+    #  with:
+    #    python-version: '3.12'
+    
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.x'
+        python-version: ${{ matrix.python-version }}
+    
+    #- name: Setup Django Secret Key
+    #  run: |
+    #    MY_GEN_KEY=$(openssl rand -base64 32)
+    #    echo "DJANGO_SECRET_KEY=$MY_GEN_KEY" >> $GITHUB_ENV
+    
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
 
     - name: Install dependencies
       run: |
+        pip install pip --upgrade
         pip install -r requirements.txt
 
     - name: Run Tests (Local)

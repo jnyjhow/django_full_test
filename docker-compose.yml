@@ -4,10 +4,19 @@ services:
 
   web:
     build: .
-    command: gunicorn myproject.wsgi:application --bind 0.0.0.0:8000
+    #command: gunicorn myproject.wsgi:application --bind 0.0.0.0:8000
+    environment:
+      DJANGO_DEBUG: ${DJANGO_DEBUG}
+      ORACLE_DATABASE_URL: ${ORACLE_DATABASE_URL}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      ORACLE_USER: ${ORACLE_USER}
+      ORACLE_PASSWORD: ${ORACLE_PASSWORD}
+      ORACLE_DSN: ${ORACLE_DSN}
+      PYTHONDONTWRITEBYTECODE: 1
+      PYTHONUNBUFFERED: 1
+      DJANGO_SETTINGS_MODULE: myproject.settings
     volumes:
       - ./src:/app
     ports:
       - "8000:8000"
-    environment:
-      DJANGO_SETTINGS_MODULE: myproject.settings
+      
