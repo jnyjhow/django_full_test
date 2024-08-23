@@ -13,6 +13,8 @@ jobs:
   test-docker:
     runs-on: ubuntu-latest
     env:
+      SCRIPT_NAME: run_django_test.sh
+      
       DJANGO_DEBUG: ${{ vars.DJANGO_DEBUG }}
       ORACLE_DATABASE_URL: ${{ vars.ORACLE_DATABASE_URL }}
 
