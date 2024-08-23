@@ -111,7 +111,7 @@ DATABASES = {
 
 CONN_MAX_AGE = config("PG_CONN_MAX_AGE", cast=int, default=30)
 DATABASE_URL = config("PG_DATABASE_URL", default=None)
-if DATABASE_URL is not None:
+if DATABASE_URL is not None and not DEBUG:
     import dj_database_url
 
     DATABASES = {
