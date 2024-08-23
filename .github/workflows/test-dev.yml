@@ -12,8 +12,8 @@ jobs:
   test-local:
     runs-on: ubuntu-latest
     env:
-      DJANGO_DEBUG: ${{ secrets.DJANGO_DEBUG }}
-      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      DEBUG: ${{ secrets.DJANGO_DEBUG }}
+      SECRET_KEY : ${{ secrets.DJANGO_SECRET_KEY }}
     environment: dev
 
     strategy:
