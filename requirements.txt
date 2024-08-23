@@ -1,4 +1,14 @@
 asgiref==3.8.1
+cffi==1.17.0
+cryptography==43.0.0
+cx-Oracle==8.3.0
+dj-database-url==2.2.0
 Django==5.1
+greenlet==3.0.3
+gunicorn==23.0.0
+oracledb==2.4.1
+packaging==24.1
+pycparser==2.22
+python-decouple==3.8
 sqlparse==0.5.1
 typing_extensions==4.12.2
