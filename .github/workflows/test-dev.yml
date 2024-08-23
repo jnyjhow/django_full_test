@@ -12,8 +12,8 @@ jobs:
   test-local:
     runs-on: ubuntu-latest
     env:
-      DEBUG: ${{ secrets.DJANGO_DEBUG }}
-      SECRET_KEY : ${{ secrets.DJANGO_SECRET_KEY }}
+      DJANGO_DEBUG: ${{ secrets.DJANGO_DEBUG }}
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
     environment: dev
 
     strategy:
@@ -32,7 +32,7 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-
+    
     #- name: Setup Django Secret Key
     #  run: |
     #    MY_GEN_KEY=$(openssl rand -base64 32)
