@@ -19,6 +19,8 @@ class DatabaseConnectionTest(TestCase):
             self._test_sqlite_connection()
         elif "oracle" in self.engine:
             self._test_oracle_connection()
+        elif "postgresql" in self.engine or "psycopg2" in self.engine:
+            self._test_postgresql_connection()
         else:
             self.skipTest(f"Banco de dados não suportado: {self.engine}")
 
@@ -40,3 +42,13 @@ class DatabaseConnectionTest(TestCase):
                 print(f"SQLite version: {result[0]}")
         except DatabaseError as e:
             self.fail(f"Falha ao conectar ao banco de dados SQLite: {str(e)}")
+
+    def _test_postgresql_connection(self):
+        try:
+            with self.connection.cursor() as cursor:
+                cursor.execute("SELECT version()")
+                result = cursor.fetchone()
+                self.assertIsNotNone(result)
+                print(f"PostgreSQL version: {result[0]}")
+        except DatabaseError as e:
+            self.fail(f"Falha ao conectar ao banco de dados PostgreSQL: {str(e)}")
