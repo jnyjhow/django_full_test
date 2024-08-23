@@ -26,14 +26,18 @@ SECRET_KEY = config("DJANGO_SECRET_KEY", cast=str)
 print("SECRET_KEY: ", SECRET_KEY)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DJANGO_DEBUG", cast=bool)
-print("DEBUG: ", DEBUG)
+
 ALLOWED_HOSTS = []
 
 if DEBUG:
+
     ALLOWED_HOSTS += [
         "127.0.0.1",
         "localhost"
     ]
+    
+    print("SECRET_KEY: ", SECRET_KEY)
+    print("DEBUG: ", DEBUG)
 
 
 # Application definition
