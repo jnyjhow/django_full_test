@@ -13,13 +13,17 @@ jobs:
   test-docker:
     runs-on: ubuntu-latest
     env:
+      SCRIPT_NAME: run_django_test.sh
+
       DJANGO_DEBUG: ${{ vars.DJANGO_DEBUG }}
       ORACLE_DATABASE_URL: ${{ vars.ORACLE_DATABASE_URL }}
+      PG_CONN_MAX_AGE: ${{ vars.PG_CONN_MAX_AGE }}
 
       DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
       ORACLE_USER: ${{ secrets.ORACLE_USER }}
       ORACLE_PASSWORD: ${{ secrets.ORACLE_PASSWORD }}
       ORACLE_DSN: ${{ secrets.ORACLE_DSN }}
+      PG_DATABASE_URL: ${{ secrets.PG_DATABASE_URL }}
     environment: homolog
 
     steps:
@@ -37,3 +41,6 @@ jobs:
     - name: Run Tests with Docker
       run: |
         docker-compose run --rm web python manage.py test
+        docker-compose run --rm web python manage.py makemigrations
+        docker-compose run --rm web python manage.py migrate
+        

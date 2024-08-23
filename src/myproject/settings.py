@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from decouple import config
+import sys
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -93,23 +94,33 @@ DATABASES = {
     }
 }
 
-DATABASE_URL = config("ORACLE_DATABASE_URL", default=False, cast=bool)
-# print(DATABASE_URL)
-if DATABASE_URL:
-    ORACLE_USER = config("ORACLE_USER", default=None)
-    ORACLE_PASSWORD = config("ORACLE_PASSWORD", default=None)
-    ORACLE_DSN = config("ORACLE_DSN", default=None)
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.oracle',
-            'NAME': (
-                ORACLE_DSN
-            ),
-            'USER': ORACLE_USER,
-            'PASSWORD': ORACLE_PASSWORD,
-        }
-    }
+# DATABASE_URL = config("ORACLE_DATABASE_URL", default=False, cast=bool)
+# print("DATABASE_URL: ", DATABASE_URL)
+# if DATABASE_URL:
+#     ORACLE_USER = config("ORACLE_USER", default=None)
+#     ORACLE_PASSWORD = config("ORACLE_PASSWORD", default=None)
+#     ORACLE_DSN = config("ORACLE_DSN", default=None)
+#     DATABASES = {
+#         "default": {
+#             "ENGINE": "django.db.backends.oracle",
+#             "NAME": (ORACLE_DSN),
+#             "USER": ORACLE_USER,
+#             "PASSWORD": ORACLE_PASSWORD,
+#         },
+#     }
 
+CONN_MAX_AGE = config("PG_CONN_MAX_AGE", cast=int, default=30)
+DATABASE_URL = config("PG_DATABASE_URL", default=None)
+if DATABASE_URL is not None:
+    import dj_database_url
+
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=CONN_MAX_AGE,
+            conn_health_checks=True,
+        )
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
