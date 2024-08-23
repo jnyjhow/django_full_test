@@ -10,7 +10,6 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 COPY requirements.txt /app/
 RUN pip install -r requirements.txt
-COPY ./run_django_test.sh /app/
 COPY ./src /app/
 
 RUN apt-get remove --purge -y \
