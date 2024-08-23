@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SCRIPT_NAME: run_django_test.sh
-      
+
       DJANGO_DEBUG: ${{ vars.DJANGO_DEBUG }}
       DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
     environment: dev
@@ -56,4 +56,5 @@ jobs:
     - name: Run Tests (Local)
       run: |
         chmod +x $SCRIPT_NAME
-        ./$SCRIPT_NAME
+        cd src/
+        ../$SCRIPT_NAME
