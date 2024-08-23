@@ -8,6 +8,8 @@ greenlet==3.0.3
 gunicorn==23.0.0
 oracledb==2.4.1
 packaging==24.1
+psycopg==3.2.1
+psycopg-binary==3.2.1
 pycparser==2.22
 python-decouple==3.8
 sqlparse==0.5.1
