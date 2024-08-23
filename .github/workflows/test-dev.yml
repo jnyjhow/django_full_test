@@ -11,6 +11,8 @@ on:
 jobs:
   test-local:
     runs-on: ubuntu-latest
+    env:
+      DJANGO_DEBUG: 1
     environment: dev
 
     steps:
@@ -19,10 +21,16 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.x'
-
+        python-version: '3.12'
+    
+    - name: Setup Django Secret Key
+      run: |
+        MY_GEN_KEY=$(openssl rand -base64 32)
+        echo "DJANGO_SECRET_KEY=$MY_GEN_KEY" >> $GITHUB_ENV
+    
     - name: Install dependencies
       run: |
+        pip install pip --upgrade
         pip install -r requirements.txt
 
     - name: Run Tests (Local)
