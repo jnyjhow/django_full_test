@@ -54,4 +54,6 @@ jobs:
     - name: Run Tests (Local)
       run: |
         cd src/
+        python manage.py makemigrations
+        python manage.py migrate
         python manage.py test
