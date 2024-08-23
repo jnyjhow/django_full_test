@@ -53,4 +53,5 @@ jobs:
 
     - name: Run Tests (Local)
       run: |
-        ./run_django_tests.sh
+        chmod +x run_django_tests.sh
+        ./run_django_test.sh

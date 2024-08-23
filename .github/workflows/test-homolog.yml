@@ -36,4 +36,5 @@ jobs:
 
     - name: Run Tests with Docker
       run: |
-        docker-compose run --rm web ./run_django_tests.sh
+        chmod +x run_django_tests.sh
+        docker-compose run --rm web ./run_django_test.sh
