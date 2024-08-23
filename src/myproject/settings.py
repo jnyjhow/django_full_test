@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from decouple import config
+import sys
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -100,16 +101,23 @@ if DATABASE_URL:
     ORACLE_PASSWORD = config("ORACLE_PASSWORD", default=None)
     ORACLE_DSN = config("ORACLE_DSN", default=None)
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.oracle',
-            'NAME': (
-                ORACLE_DSN
-            ),
-            'USER': ORACLE_USER,
-            'PASSWORD': ORACLE_PASSWORD,
-        }
+        "default": {
+            "ENGINE": "django.db.backends.oracle",
+            "NAME": (ORACLE_DSN),
+            "USER": ORACLE_USER,
+            "PASSWORD": ORACLE_PASSWORD,
+        },
+        "admin": {
+            "ENGINE": "django.db.backends.oracle",
+            "NAME": (ORACLE_DSN),
+            "USER": ORACLE_USER,
+            "PASSWORD": ORACLE_PASSWORD,
+        },
     }
 
+    # print(sys.argv)
+    if 'test' in sys.argv:
+        DATABASES['default'] = DATABASES['admin']
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

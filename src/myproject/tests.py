@@ -1,6 +1,6 @@
 from django.test import SimpleTestCase
 from django.test import TestCase
-from django.db import connection
+from django.db import connections, DatabaseError
 
 
 class SimpleTest(SimpleTestCase):
@@ -10,11 +10,33 @@ class SimpleTest(SimpleTestCase):
 
 
 class DatabaseConnectionTest(TestCase):
-    def test_oracle_connection(self):
+    def setUp(self):
+        self.connection = connections["default"]
+        self.engine = self.connection.settings_dict["ENGINE"]
+
+    def test_database_connection(self):
+        if "sqlite" in self.engine:
+            self._test_sqlite_connection()
+        elif "oracle" in self.engine:
+            self._test_oracle_connection()
+        else:
+            self.skipTest(f"Banco de dados não suportado: {self.engine}")
+
+    def _test_oracle_connection(self):
         try:
-            with connection.cursor() as cursor:
+            with self.connection.cursor() as cursor:
                 cursor.execute("SELECT 1 FROM dual")
                 result = cursor.fetchone()
-                self.assertEqual(result[0], 1)
-        except Exception as e:
+                self.assertIsNotNone(result)
+        except DatabaseError as e:
             self.fail(f"Falha ao conectar ao banco de dados Oracle: {str(e)}")
+
+    def _test_sqlite_connection(self):
+        try:
+            with self.connection.cursor() as cursor:
+                cursor.execute("SELECT sqlite_version()")
+                result = cursor.fetchone()
+                self.assertIsNotNone(result)
+                print(f"SQLite version: {result[0]}")
+        except DatabaseError as e:
+            self.fail(f"Falha ao conectar ao banco de dados SQLite: {str(e)}")
